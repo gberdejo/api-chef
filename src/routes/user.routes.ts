@@ -1,8 +1,8 @@
-import {Router} from 'express';
+import { Router } from 'express';
 import userController from '../controllers/user.controller';
 
 const router = Router();
 
-router.get('/',userController.home)
+router.get('/users', userController.home)
 
 export default router;

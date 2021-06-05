@@ -1,36 +1,86 @@
-import express, {Application} from 'express';
+import express, { Application, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
-import morgan from 'morgan';
+import morgan, { format } from 'morgan';
 import routerUser from './routes/user.routes';
-class App{
-   private app:Application;
-    constructor(){
+import sequelize from './db'
+import Category from './models/category'
+import User from './models/user'
+import Type from './models/type'
+import Recipe from './models/recipe'
+import dotenv from 'dotenv'
+class App {
+    private app: Application;
+    constructor() {
         this.app = express();
         this.settings()
         this.middlewares()
         this.routes()
+        dotenv.config()
     }
-
-    settings(){
-    
+    private settings(): void {
         this.app.use(cors())
         this.app.use(morgan('dev'))
+        this.app.set('port', process.env.PORT || 3000)
     }
-    middlewares(){
+    private middlewares(): void {
 
     }
-    routes(){
-        this.app.use(routerUser)
-        this.app.use((req,res)=>{
-            res.json({msg:'gaa'})
+    private routes(): void {
+        this.app.use('/api', routerUser)
+        this.app.use((req: Request, res: Response, next: NextFunction) => {
+            const err = new Error(`Not Fount - ${req.originalUrl}`)
+            res.status(404)
+            next(err)
+        })
+        this.app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+            const statusCode = res.statusCode === 200 ? 500 : res.statusCode
+            res.status(statusCode).json({
+                status: statusCode,
+                message: err.message,
+                stack: err.stack
+            })
         })
     }
-    listen(){
-        this.app.listen(4000,()=>{
-            console.log('server run')
+    private models(): Promise<unknown> {
+        return new Promise(async (resolve, reject) => {
+            try {
+                Type.hasMany(Recipe)
+                Recipe.belongsTo(Type)
+
+                Category.hasMany(Recipe)
+                Recipe.belongsTo(Category)
+
+                User.hasMany(Recipe)
+                Recipe.belongsTo(User)
+
+                sequelize.sync();
+                resolve("-->> Tables sync!")
+            } catch (err) {
+                console.log(err)
+                reject(err)
+            }
+        })
+    }
+    public start(): void {
+        sequelize.authenticate()
+            .then(() => {
+                console.log('DataBase Connection!')
+                //return this.models()
+                this.listen()
+            })
+            /*.then((info) => {
+                console.log(info)
+                //this.listen()
+            })*/
+            .catch((err) => console.log(err))
+
+    }
+    private listen(): void {
+
+        this.app.listen(this.app.get('port'), () => {
+            console.log(`server on port: ${this.app.get('port')}`)
         })
     }
 }
 
 export default new App;
-   
