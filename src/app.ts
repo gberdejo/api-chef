@@ -33,6 +33,7 @@ class App {
             next(err)
         })
         this.app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+            console.log(err.name)
             const statusCode = res.statusCode === 200 ? 500 : res.statusCode
             res.status(statusCode).json({
                 status: statusCode,
