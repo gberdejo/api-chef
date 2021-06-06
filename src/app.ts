@@ -2,6 +2,7 @@ import express, { Application, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import morgan, { format } from 'morgan';
 import routerUser from './routes/user.routes';
+import routerCategory from './routes/categoty.routes';
 import sequelize from './db'
 import Category from './models/category'
 import User from './models/user'
@@ -18,15 +19,19 @@ class App {
         dotenv.config()
     }
     private settings(): void {
-        this.app.use(cors())
-        this.app.use(morgan('dev'))
         this.app.set('port', process.env.PORT || 3000)
+        
     }
     private middlewares(): void {
-
+        this.app.use(cors())
+        this.app.use(morgan('dev'))
+        this.app.use(express.urlencoded({extended: true}))
+        this.app.use(express.json())
+        
     }
     private routes(): void {
         this.app.use('/api', routerUser)
+        this.app.use('/api', routerCategory)
         this.app.use((req: Request, res: Response, next: NextFunction) => {
             const err = new Error(`Not Fount - ${req.originalUrl}`)
             res.status(404)
@@ -70,7 +75,7 @@ class App {
             })
             /*.then((info) => {
                 console.log(info)
-                //this.listen()
+                this.listen()
             })*/
             .catch((err) => console.log(err))
 

@@ -11,9 +11,6 @@ class UserServiceImpl implements UserService {
     public async createUser(obj: User): Promise<User> {
         try {
             const user:User = await this.user.create(obj);
-            if(!user) {
-                throw createError(400,'no se pudo crear')
-            }
             return user
         } catch (err) {
             throw err

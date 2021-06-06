@@ -27,7 +27,7 @@ class UserController {
             res.status(200).json(user)
         } catch (err) {
             if(err instanceof sequelize.Error){
-                return next(createError(429,err,'Inalido user'))
+                return next(createError(429,err))
             }
             next(err)
         }

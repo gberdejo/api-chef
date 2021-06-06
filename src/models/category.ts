@@ -1,12 +1,13 @@
 import { DataTypes, Model } from 'sequelize'
 import sequelize from '../db'
 
-class Direction extends Model {
+class Category extends Model {
     public id!: Number;
     public direction!: String
+    category: any;
 
 }
-Direction.init({
+Category.init({
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -27,4 +28,4 @@ Direction.init({
     }]
 })
 
-export default Direction
+export default Category
