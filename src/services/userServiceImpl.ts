@@ -1,6 +1,5 @@
 import User from '../models/user';
 import UserService from './userService'
-import UserRepository from '../repositorys/userRepository'
 import createError from 'http-errors'
 class UserServiceImpl implements UserService {
 

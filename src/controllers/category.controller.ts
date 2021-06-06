@@ -40,6 +40,17 @@ class CategoryController{
             next(err)
         }
     }
+    deleteCategory : Handler = async (req: Request, res:Response,next:NextFunction) => {
+        try {
+            const results :string = await this.category.deleteCategory(Number(req.params.id))
+            res.status(200).json({msg:results})
+        } catch (err) {
+            if(err instanceof sequelize.Error){
+                next(createError(400,err))
+            }
+            next(err)
+        }
+    }
 }
 
 export default new CategoryController

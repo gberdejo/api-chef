@@ -28,6 +28,7 @@
     "config": "^3.3.6",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "express-validator": "^6.11.1",
     "http-errors": "^1.8.0",
     "morgan": "^1.10.0",
     "mysql2": "^2.2.5",
