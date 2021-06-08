@@ -1,6 +1,7 @@
 import User from '../models/user';
 import UserService from './userService'
 import createError from 'http-errors'
+import { nanoid } from 'nanoid'
 class UserServiceImpl implements UserService {
 
     private user
@@ -9,12 +10,13 @@ class UserServiceImpl implements UserService {
     }
     public async createUser(obj: User): Promise<User> {
         try {
-            const user:User = await this.user.create(obj);
+            const user: User = this.user.build(obj);
+            //user.id = nanoid()
             return user
         } catch (err) {
             throw err
         }
-               
+
     }
     public async listUsers(): Promise<User[]> {
         try {

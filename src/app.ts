@@ -9,35 +9,43 @@ import User from './models/user'
 import Type from './models/type'
 import Recipe from './models/recipe'
 import dotenv from 'dotenv'
+import swaggerUi from 'swagger-ui-express'
+import swaggerJSDoc from 'swagger-jsdoc';
+import { options } from './awaggerOptions'
 class App {
-    private app: Application;
+    private app: Application
+    private specs: any
     constructor() {
         this.app = express();
         this.settings()
         this.middlewares()
         this.routes()
         dotenv.config()
+
     }
     private settings(): void {
         this.app.set('port', process.env.PORT || 3000)
-        
+
     }
     private middlewares(): void {
         this.app.use(cors())
         this.app.use(morgan('dev'))
-        this.app.use(express.urlencoded({extended: true}))
+        this.app.use(express.urlencoded({ extended: true }))
         this.app.use(express.json())
-        
+
     }
     private routes(): void {
+
         this.app.use('/api', routerUser)
         this.app.use('/api', routerCategory)
+        this.specs = swaggerJSDoc(options)
+        this.app.use('/docs', swaggerUi.serve, swaggerUi.setup(this.specs))
         this.app.use((req: Request, res: Response, next: NextFunction) => {
             const err = new Error(`Not Fount - ${req.originalUrl}`)
             res.status(404)
             next(err)
         })
-        this.app.use((err : any, req: Request, res: Response, next: NextFunction) => {
+        this.app.use((err: any, req: Request, res: Response, next: NextFunction) => {
             res.status(err.status || 500)
             res.json({
                 status: err.status,

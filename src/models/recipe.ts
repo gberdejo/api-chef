@@ -2,21 +2,20 @@ import { DataTypes, Model } from 'sequelize'
 import sequelize from '../db'
 
 class Recipe extends Model {
-    public id!: Number
-    public name!: String
-    public description!: String
-    public image!: String
+    public id!: string
+    public name!: string
+    public description!: string
+    public image!: string
     public favorite!: Number
-    public state!: String
+    public state!: string
     public created!: Date
     public updated!: Date
 }
 Recipe.init({
     id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         primaryKey: true,
         allowNull: false,
-        autoIncrement: true
     },
     name: {
         type: DataTypes.STRING(100),
@@ -56,7 +55,6 @@ Recipe.init({
 
     sequelize,
     timestamps: false,
-    initialAutoIncrement: "1",
 })
 
 export default Recipe

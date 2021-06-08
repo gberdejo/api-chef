@@ -2,51 +2,53 @@ import { Handler, Response, Request, NextFunction } from 'express'
 import CategoryServiceImpl from '../services/categoryServiceImpl'
 import sequelize from 'sequelize'
 import createError from 'http-errors'
-class CategoryController{
-    private category : CategoryServiceImpl
-    constructor(){
+import Category from '../models/category'
+class CategoryController {
+    private category: CategoryServiceImpl
+    constructor() {
         this.category = new CategoryServiceImpl
     }
-     createCategory :Handler = async (req: Request, res:Response,next:NextFunction)  => {
+    createCategory: Handler = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const results  = await this.category.createCategory(req.body)
+            const { category, ...data } = req.body
+            const results = await this.category.createCategory(category)
             res.status(200).json(results)
         } catch (err) {
-            if(err instanceof sequelize.Error){
-                next(createError(400,err))
+            if (err instanceof sequelize.Error) {
+                next(createError(400, err))
             }
             next(err)
         }
     }
-    getOneCategory : Handler = async (req: Request, res:Response,next:NextFunction) => {
+    getOneCategory: Handler = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const results = await this.category.getOneCategory(Number(req.params.id))
+            const results = await this.category.getOneCategory(req.params.id)
             res.status(200).json(results)
         } catch (err) {
-            if(err instanceof sequelize.Error){
-                next(createError(400,err))
+            if (err instanceof sequelize.Error) {
+                next(createError(400, err))
             }
             next(err)
         }
     }
-    getListCategory : Handler = async (req: Request, res:Response,next:NextFunction) => {
+    getListCategory: Handler = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const list = await this.category.listCategory();
             res.status(200).json(list)
         } catch (err) {
-            if(err instanceof sequelize.Error){
-                next(createError(400,err))
+            if (err instanceof sequelize.Error) {
+                next(createError(400, err))
             }
             next(err)
         }
     }
-    deleteCategory : Handler = async (req: Request, res:Response,next:NextFunction) => {
+    deleteCategory: Handler = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const results :string = await this.category.deleteCategory(Number(req.params.id))
-            res.status(200).json({msg:results})
+            const results: string = await this.category.deleteCategory(req.params.id)
+            res.status(200).json({ msg: results })
         } catch (err) {
-            if(err instanceof sequelize.Error){
-                next(createError(400,err))
+            if (err instanceof sequelize.Error) {
+                next(createError(400, err))
             }
             next(err)
         }

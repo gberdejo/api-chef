@@ -2,16 +2,15 @@ import { DataTypes, Model } from 'sequelize'
 import sequelize from '../db'
 
 class Type extends Model {
-    public id!: Number
+    public id!: string
     public type!: String
 }
 
 Type.init({
     id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         primaryKey: true,
         allowNull: false,
-        autoIncrement: true
     },
     type: {
         type: DataTypes.STRING,

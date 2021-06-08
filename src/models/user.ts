@@ -2,23 +2,22 @@ import { DataTypes, Model } from 'sequelize'
 import sequelize from '../db'
 
 class User extends Model {
-    public id!: Number
-    public name!: String
-    public lastname!: String
+    public id!: string
+    public name!: string
+    public lastname!: string
     public age!: Number
-    public email!: String
-    public password!: String
-    public image!: String
-    public state!: String
+    public email!: string
+    public password!: string
+    public image!: string
+    public state!: string
     public created!: Date
     public updated!: Date
 }
 User.init({
     id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         primaryKey: true,
         allowNull: false,
-        autoIncrement: true
     },
     name: {
         type: DataTypes.STRING(100),
@@ -61,7 +60,6 @@ User.init({
 
     sequelize,
     timestamps: false,
-    initialAutoIncrement: "1",
     indexes: [{
         unique: true,
         fields: ['email']

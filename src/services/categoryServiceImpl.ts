@@ -2,16 +2,19 @@ import Category from '../models/category'
 import CategoryService from './categoryService'
 import createError from 'http-errors'
 import { Op } from 'sequelize'
-class CategoryServiceImpl implements CategoryService{
+import { nanoid } from 'nanoid'
+class CategoryServiceImpl implements CategoryService {
 
     private category
-    constructor(){
+    constructor() {
         this.category = Category
     }
-    public async getOneCategory(id: number): Promise<Category> {
+    public async getOneCategory(id: string): Promise<Category> {
         try {
-            const obj:Category | null = await this.category.findByPk(id);
-            if(!obj) throw createError(404,`No se encontro el id ${id}`)
+            const obj: Category | null = await this.category.findOne({
+                where: { id }
+            })
+            if (!obj) throw createError(404, `No se encontro el id ${id}`)
             return obj
         } catch (err) {
             throw err
@@ -19,18 +22,18 @@ class CategoryServiceImpl implements CategoryService{
     }
     public async listCategory(): Promise<Category[]> {
         try {
-            const list : Category[] = await this.category.findAll({
-                order:[['category','ASC']]
+            const list: Category[] = await this.category.findAll({
+                order: [['category', 'ASC']]
             })
             return list
         } catch (err) {
             throw err
         }
     }
-    public editCateogry(id: number, obj: Category): Promise<Category> {
+    public editCateogry(id: string, obj: Category): Promise<Category> {
         throw new Error('Method not implemented.')
     }
-    public async deleteCategory(id: number): Promise<string> {
+    public async deleteCategory(id: string): Promise<string> {
         try {
             await this.category.destroy({
                 where: { id }
@@ -40,16 +43,17 @@ class CategoryServiceImpl implements CategoryService{
             throw err
         }
     }
-    public async createCategory(obj: Category): Promise<Category> {
-        //throw new Error('Method not implemented.');
+    public async createCategory(category: string): Promise<Category> {
         try {
-            const raw = await this.category.create(obj)
-            return raw
+            const cate = this.category.build({ category })
+            cate.id = nanoid()
+            await cate.save()
+            return cate
         } catch (err) {
             throw err
         }
     }
-  
+
 
 }
 export default CategoryServiceImpl
