@@ -53,6 +53,17 @@ class CategoryController {
             next(err)
         }
     }
+    updateCategory: Handler = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const obj = await this.category.editCateogry(req.params.id, req.body)
+            res.status(200).json(obj)
+        } catch (err) {
+            if (err instanceof sequelize.Error) {
+                next(createError(400, err))
+            }
+            next(err)
+        }
+    }
 }
 
 export default new CategoryController

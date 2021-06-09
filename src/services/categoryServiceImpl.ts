@@ -30,8 +30,21 @@ class CategoryServiceImpl implements CategoryService {
             throw err
         }
     }
-    public editCateogry(id: string, obj: Category): Promise<Category> {
-        throw new Error('Method not implemented.')
+    public async editCateogry(id: string, obj: any): Promise<Category> {
+        try {
+            const {category} = obj
+            await this.category.update({
+                category
+            },{
+                where:{
+                    id
+                }
+            })
+            const cat: Category = await this.getOneCategory(id)
+            return cat
+        } catch (err) {
+            throw err
+        }
     }
     public async deleteCategory(id: string): Promise<string> {
         try {
