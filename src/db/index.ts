@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize';
-import { config as dotenv } from 'dotenv'
-dotenv()
+// import { config as dotenv } from 'dotenv'
+// dotenv()
 const { DB_NAME, DB_USER, DB_PASS, DB_HOST, DB_PORT, DB_SSL } = process.env
 const sequelize = new Sequelize(
     DB_NAME || 'apichef',

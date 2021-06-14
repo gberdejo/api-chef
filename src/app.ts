@@ -8,7 +8,7 @@ import Category from './models/category'
 import User from './models/user'
 import Type from './models/type'
 import Recipe from './models/recipe'
-import dotenv from 'dotenv'
+//import dotenv from 'dotenv'
 import swaggerUi from 'swagger-ui-express'
 import swaggerJSDoc from 'swagger-jsdoc';
 import { options } from './awaggerOptions'
@@ -20,11 +20,11 @@ class App {
         this.settings()
         this.middlewares()
         this.routes()
-        dotenv.config()
+        //dotenv.config()
 
     }
     private settings(): void {
-        this.app.set('port', process.env.PORT || 3000)
+        this.app.set('port', process.env.PORT || 4000)
 
     }
     private middlewares(): void {
