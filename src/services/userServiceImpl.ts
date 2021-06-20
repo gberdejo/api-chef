@@ -8,18 +8,45 @@ class UserServiceImpl implements UserService {
     constructor() {
         this.user = User
     }
-    public oneUser(user: User): Promise<User> {
-        throw new Error('Method not implemented.');
-    }
-    public updateUser(id: number, user: User): Promise<User> {
-        throw new Error('Method not implemented.');
-    }
-    public async createUser(obj: User): Promise<User> {
+    public async oneUser(id:number): Promise<User | null> {
         try {
-            const user: User = this.user.build(obj);
-            //user.id = nanoid()
+            const user:User | null = await this.user.findByPk(id)
+            return user;
+        } catch (err) {
+            throw err
+            
+        }
+    }
+    public async updateUser(id: number, user: User): Promise<User | null> {
+        try {
+            
+            await this.user.update({
+                name: user.name,
+                lastname: user.lastname,
+                age: user.age
+            },{
+                where: {id}
+            })
+            const obj:User | null = await this.oneUser(id)
+            return obj
+        } catch (err) {
+             throw err
+        }
+    }
+    public async createUser(body: User): Promise<User> {
+        try {
+        
+            const user: User =  this.user.build({
+                name: body.name,
+                lastname: body.lastname,
+                age: body.age,
+                email: body.email,
+                password: body.password
+            });
+            await user.save()
             return user
         } catch (err) {
+            console.log(err)
             throw err
         }
 

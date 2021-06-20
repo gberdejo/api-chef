@@ -1,15 +1,13 @@
 import { Sequelize } from 'sequelize';
-import { config as dotenv } from 'dotenv'
-dotenv()
-const { DB_NAME, DB_USER, DB_PASS, DB_HOST, DB_PORT, DB_SSL } = process.env
+import {db} from '../config'
 const sequelize = new Sequelize(
-    DB_NAME || 'apichef',
-    DB_USER || 'root',
-    DB_PASS || 'mysql',
+    db.DB_NAME,
+    db.DB_USER,
+    db.DB_PASS,
     {
-        host: DB_HOST || 'localhost',
+        host: db.DB_HOST,
         dialect: 'mysql',
-        port: Number(DB_PORT) || 3306,
+        port: Number(db.DB_PORT) ,
         pool:
         {
             min: 0,
@@ -17,10 +15,10 @@ const sequelize = new Sequelize(
             idle: 10000
         },
         dialectOptions: {
-            ssl: DB_SSL || false
+            ssl: db.DB_SSL
         },
         logging: false
     }
 )
-console.log(`host-DB--->${DB_HOST || 'localhost'}`)
+console.log(`host-DB--->${db.DB_HOST || 'localhost'}`)
 export default sequelize

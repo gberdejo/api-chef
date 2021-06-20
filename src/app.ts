@@ -4,27 +4,21 @@ import morgan, { format } from 'morgan';
 import routerUser from './routes/user.routes';
 import routerCategory from './routes/categoty.routes';
 import sequelize from './db'
-import dotenv from 'dotenv'
-import swaggerUi from 'swagger-ui-express'
-import Category from './models/category';
 import Recipe from './models/recipe';
 import Type from './models/type';
 import User from './models/user';
-import swaggerJSDoc from 'swagger-jsdoc';
-import { options } from './awaggerOptions'
+import  {server} from './config'
 class App {
     private app: Application
-    private specs: any
     constructor() {
         this.app = express();
         this.settings()
         this.middlewares()
         this.routes()
-        dotenv.config()
 
     }
     private settings(): void {
-        this.app.set('port', process.env.PORT || 4000)
+        this.app.set('port', server.PORT)
 
     }
     private middlewares(): void {
@@ -37,9 +31,7 @@ class App {
     private routes(): void {
 
         this.app.use('/api', routerUser)
-        this.app.use('/api', routerCategory)
-        this.specs = swaggerJSDoc(options)
-        this.app.use('/docs', swaggerUi.serve, swaggerUi.setup(this.specs))
+        //!this.app.use('/api', routerCategory)
         this.app.use((req: Request, res: Response, next: NextFunction) => {
             const err = new Error(`Not Fount - ${req.originalUrl}`)
             res.status(404)
@@ -54,36 +46,10 @@ class App {
             })
         })
     }
-    private models(): Promise<unknown> {
-        return new Promise( (resolve, reject) => {
-            try {
-                 Recipe.sync()
-                 Type.sync()
-                 User.sync()
-                resolve("-->> Tables sync!")
-            } catch (err) {
-                console.log(err)
-                reject(err)
-            }
-        })
-    }
-    public start(): void {
-        sequelize.authenticate()
-            .then(() => {
-                console.log('DataBase Connection!')
-                return this.models()
-                //this.listen()
-            })
-            .then((info) => {
-                console.log(info)
-                this.listen()
-            })
-            .catch((err) => console.log(err))
-
-    }
-    private listen(): void {
+    public listen(): void {
         this.app.listen(this.app.get('port'), () => {
             console.log(`server on port: ${this.app.get('port')}`)
+            Type.sync({alter: true})
         })
     }
 }
