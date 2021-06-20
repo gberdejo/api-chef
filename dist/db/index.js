@@ -1,22 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
-// import { config as dotenv } from 'dotenv'
-// dotenv()
-const { DB_NAME, DB_USER, DB_PASS, DB_HOST, DB_PORT, DB_SSL } = process.env;
-const sequelize = new sequelize_1.Sequelize(DB_NAME || 'apichef', DB_USER || 'root', DB_PASS || 'mysql', {
-    host: DB_HOST || 'localhost',
+const config_1 = require("../config");
+const sequelize = new sequelize_1.Sequelize(config_1.db.DB_NAME, config_1.db.DB_USER, config_1.db.DB_PASS, {
+    host: config_1.db.DB_HOST,
     dialect: 'mysql',
-    port: Number(DB_PORT) || 3306,
+    port: Number(config_1.db.DB_PORT),
     pool: {
         min: 0,
         max: 5,
         idle: 10000
     },
     dialectOptions: {
-        ssl: DB_SSL || false
+        ssl: config_1.db.DB_SSL
     },
     logging: false
 });
-console.log(`host-DB--->${DB_HOST || 'localhost'}`);
+console.log(`host-DB--->${config_1.db.DB_HOST || 'localhost'}`);
 exports.default = sequelize;

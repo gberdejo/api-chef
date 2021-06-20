@@ -17,14 +17,50 @@ class UserServiceImpl {
     constructor() {
         this.user = user_1.default;
     }
-    createUser(obj) {
+    oneUser(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const user = this.user.build(obj);
-                //user.id = nanoid()
+                const user = yield this.user.findByPk(id);
                 return user;
             }
             catch (err) {
+                throw err;
+            }
+        });
+    }
+    updateUser(id, user) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield this.user.update({
+                    name: user.name,
+                    lastname: user.lastname,
+                    age: user.age
+                }, {
+                    where: { id }
+                });
+                const obj = yield this.oneUser(id);
+                return obj;
+            }
+            catch (err) {
+                throw err;
+            }
+        });
+    }
+    createUser(body) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const user = this.user.build({
+                    name: body.name,
+                    lastname: body.lastname,
+                    age: body.age,
+                    email: body.email,
+                    password: body.password
+                });
+                yield user.save();
+                return user;
+            }
+            catch (err) {
+                console.log(err);
                 throw err;
             }
         });

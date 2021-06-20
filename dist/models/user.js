@@ -9,9 +9,10 @@ class User extends sequelize_1.Model {
 }
 User.init({
     id: {
-        type: sequelize_1.DataTypes.STRING,
+        type: sequelize_1.DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
+        autoIncrement: true
     },
     name: {
         type: sequelize_1.DataTypes.STRING(100),
@@ -52,6 +53,7 @@ User.init({
     }
 }, {
     sequelize: db_1.default,
+    initialAutoIncrement: "1",
     timestamps: false,
     indexes: [{
             unique: true,

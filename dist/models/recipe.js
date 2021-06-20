@@ -9,9 +9,10 @@ class Recipe extends sequelize_1.Model {
 }
 Recipe.init({
     id: {
-        type: sequelize_1.DataTypes.STRING,
+        type: sequelize_1.DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
+        autoIncrement: true
     },
     name: {
         type: sequelize_1.DataTypes.STRING(100),
@@ -44,9 +45,19 @@ Recipe.init({
         type: sequelize_1.DataTypes.STRING,
         allowNull: false,
         defaultValue: 1
+    },
+    categoryId: {
+        type: sequelize_1.DataTypes.INTEGER
+    },
+    typeId: {
+        type: sequelize_1.DataTypes.INTEGER
+    },
+    userId: {
+        type: sequelize_1.DataTypes.INTEGER
     }
 }, {
     sequelize: db_1.default,
     timestamps: false,
+    initialAutoIncrement: "1"
 });
 exports.default = Recipe;

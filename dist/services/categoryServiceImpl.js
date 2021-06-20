@@ -14,7 +14,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const category_1 = __importDefault(require("../models/category"));
 const http_errors_1 = __importDefault(require("http-errors"));
-const nanoid_1 = require("nanoid");
 class CategoryServiceImpl {
     constructor() {
         this.category = category_1.default;
@@ -83,7 +82,6 @@ class CategoryServiceImpl {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const cate = this.category.build({ category });
-                cate.id = nanoid_1.nanoid();
                 yield cate.save();
                 return cate;
             }

@@ -9,9 +9,10 @@ class Type extends sequelize_1.Model {
 }
 Type.init({
     id: {
-        type: sequelize_1.DataTypes.STRING,
+        type: sequelize_1.DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
+        autoIncrement: true
     },
     type: {
         type: sequelize_1.DataTypes.STRING,

@@ -17,27 +17,53 @@ const sequelize_1 = __importDefault(require("sequelize"));
 const http_errors_1 = __importDefault(require("http-errors"));
 class UserController {
     constructor() {
-        this.home = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+        this.createUser = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const list = yield this.user.listUsers();
-                res.status(200).json(list);
+                const user = yield this.user.createUser(req.body);
+                res.status(200).json({ status: 200, message: "Success", data: user });
             }
             catch (err) {
-                console.log(err instanceof sequelize_1.default.Error);
-                if (err instanceof sequelize_1.default.Error) {
-                    next(http_errors_1.default(400, 'invalid select'));
+                console.log(err);
+                if (err instanceof sequelize_1.default.ValidationError) {
+                    next(http_errors_1.default(400, err));
                 }
                 next(err);
             }
         });
-        this.inserUser = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+        this.oneUser = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const user = yield this.user.createUser(req.body);
-                res.status(200).json(user);
+                const user = yield this.user.oneUser(Number(req.params.id));
+                if (!user)
+                    res.status(400).json({ status: 400, message: "Warning", data: "LOco de m" });
+                res.status(200).json({ status: 200, message: "Success", data: user });
             }
             catch (err) {
-                if (err instanceof sequelize_1.default.Error) {
-                    return next(http_errors_1.default(429, err));
+                if (err instanceof sequelize_1.default.ValidationError) {
+                    return next(http_errors_1.default(400, err));
+                }
+                next(err);
+            }
+        });
+        this.updateUser = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const user = yield this.user.updateUser(Number(req.params.id), req.body);
+                res.status(200).json({ status: 200, message: "Success", data: user });
+            }
+            catch (err) {
+                if (err instanceof sequelize_1.default.ValidationError) {
+                    return next(http_errors_1.default(400, err));
+                }
+                next(err);
+            }
+        });
+        this.listUser = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const list = yield this.user.listUsers();
+                res.status(200).json({ status: 200, message: "Success", data: list });
+            }
+            catch (err) {
+                if (err instanceof sequelize_1.default.ValidationError) {
+                    return next(http_errors_1.default(400, err));
                 }
                 next(err);
             }
