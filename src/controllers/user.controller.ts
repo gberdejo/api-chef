@@ -11,7 +11,7 @@ class UserController {
     public createUser: Handler = async (req, res, next) => {
         try {
             const user: User  = await this.user.createUser(req.body)
-            res.status(200).json({status:200,message:"Success",data: user}) 
+            res.status(200).json(user) 
         } catch (err) {
             console.log(err)
             if(err instanceof sequelize.ValidationError){
@@ -25,7 +25,7 @@ class UserController {
         try {
             const user :User | null = await this.user.oneUser(Number(req.params.id))
             if(!user) res.status(400).json({status:400,message:"Warning",data: "LOco de m"})
-            res.status(200).json({status:200,message:"Success",data: user})
+            res.status(200).json(user)
         } catch (err) {
             if(err instanceof sequelize.ValidationError){
                 return next(createError(400,err))
@@ -36,7 +36,7 @@ class UserController {
     public updateUser: Handler = async (req,res,next) => {
         try {
             const user :User | null = await this.user.updateUser(Number(req.params.id),req.body)
-             res.status(200).json({status:200,message:"Success",data: user})
+             res.status(200).json(user)
         } catch (err) {
               if(err instanceof sequelize.ValidationError){
                 return next(createError(400,err))
@@ -47,7 +47,7 @@ class UserController {
     public listUser: Handler = async (req,res,next) => {
         try {
             const list: User[] = await this.user.listUsers();
-            res.status(200).json({status:200,message:"Success",data: list})
+            res.status(200).json(list)
         } catch (err) {
              if(err instanceof sequelize.ValidationError){
                 return next(createError(400,err))
