@@ -7,8 +7,8 @@ router.get('/categories/:id', categoryController.getOneCategory)
 
 router.get('/categories', categoryController.getListCategory)
 
-router.post('/categories', categoryController.createCategory)
+//router.post('/categories', categoryController.createCategory)
 
-router.delete('/categories/:id', categoryController.deleteCategory)
+//router.delete('/categories/:id', categoryController.deleteCategory)
 
 export default router

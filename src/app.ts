@@ -1,12 +1,9 @@
 import express, { Application, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
-import morgan, { format } from 'morgan';
+import morgan from 'morgan';
 import routerUser from './routes/user.routes';
 import routerCategory from './routes/categoty.routes';
-import sequelize from './db'
-import Recipe from './models/recipe';
-import Type from './models/type';
-import User from './models/user';
+import routerRecipe from './routes/recipe.routes';
 import  {server} from './config'
 class App {
     private app: Application
@@ -31,7 +28,8 @@ class App {
     private routes(): void {
 
         this.app.use('/api', routerUser)
-        //!this.app.use('/api', routerCategory)
+        this.app.use('/api', routerCategory)
+        this.app.use('/api', routerRecipe)
         this.app.use((req: Request, res: Response, next: NextFunction) => {
             const err = new Error(`Not Fount - ${req.originalUrl}`)
             res.status(404)
@@ -49,7 +47,7 @@ class App {
     public listen(): void {
         this.app.listen(this.app.get('port'), () => {
             console.log(`server on port: ${this.app.get('port')}`)
-            Type.sync({alter: true})
+       
         })
     }
 }
