@@ -16,7 +16,7 @@ class CategoryController {
         } catch (err) {
             if (err instanceof sequelize.Error) {
                 next(createError(400, err))
-            }
+            }    
             next(err)
         }
     }
