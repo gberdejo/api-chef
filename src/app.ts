@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import routerUser from './routes/user.routes';
 import routerCategory from './routes/categoty.routes';
 import routerRecipe from './routes/recipe.routes';
+import express_handlebars from 'express-handlebars'
 import  {server} from './config'
 class App {
     private app: Application
@@ -15,6 +16,17 @@ class App {
 
     }
     private settings(): void {
+        //settings
+        this.app.engine(
+            ".hbs",
+            express_handlebars({
+                defaultLayout: "main",
+                layoutsDir: __dirname + "/views/layouts",
+                partialsDir: __dirname + "/views/partials",
+                extname: ".hbs",
+            })
+            );
+        this.app.set("view engine", ".hbs");
         this.app.set('port', server.PORT)
 
     }
@@ -43,6 +55,7 @@ class App {
                 stack: err.stack
             })
         })
+        this.app.use(express.static("public"));
     }
     public listen(): void {
         this.app.listen(this.app.get('port'), () => {

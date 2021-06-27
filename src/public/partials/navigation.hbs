@@ -1,0 +1,58 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid justify-content-between">
+        <!-- Left elements -->
+        <div class="d-flex">
+            <!-- Brand -->
+            <a class="navbar-brand me-2 mb-1 d-flex align-items-center">
+                <strong>MikasaPet</strong>
+            </a>
+
+            <!-- Search form -->
+            <div style="min-width: 125px;"></div>
+            <!--<form class="input-group w-auto my-auto d-none d-sm-flex ">
+                <input autocomplete="off" type="search" class="form-control rounded" placeholder="Search"
+                    style="min-width: 125px;" />
+                <span class="input-group-text border-0 d-none d-lg-flex"><i class="fas fa-search"></i></span>
+            </form>-->
+        </div>
+        <!-- Left elements -->
+
+        <!-- Center elements -->
+        <ul class="navbar-nav flex-row d-none d-md-flex">
+            <li class="nav-item me-3 me-lg-1 active">
+                <a class="nav-link" href="/">
+                    <span><i class="fas fa-home fa-lg"></i></span> Home
+                </a>
+            </li>
+
+            <li class="nav-item me-3 me-lg-1">
+                <a class="nav-link" href="/product">
+                    <span><i class="fas fa-shopping-basket fa-lg"></i></span> Productos
+                </a>
+            </li>
+
+            <li class="nav-item me-3 me-lg-1">
+                <a class="nav-link" href="/vet">
+                    <span><i class="fas fa-hospital-user fa-lg"></i></span> Servicios
+                </a>
+            </li>
+        </ul>
+        <!-- Center elements -->
+
+        <!-- Right elements -->
+        <ul class="navbar-nav flex-row">
+            {{>client_menu}}
+            {{>seller_menu}}
+            {{>veterinary_menu}}
+            {{#if user}}
+            {{else}}
+            <li class="nav-item me-3 me-lg-1">
+                <a class="nav-link" href="/login">
+                    <span><i class="fas fa-user fa-lg"></i></span> Iniciar Sesión
+                </a>
+            </li>
+            {{/if}}
+        </ul>
+        <!-- Right elements -->
+    </div>
+</nav>
